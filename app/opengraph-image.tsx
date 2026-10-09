@@ -9,8 +9,17 @@ export const contentType = 'image/png';
 /**
  * Default share card, drawn at request time (no static /og.jpg needed).
  * Used for the homepage and any route without its own opengraph-image.
+ *
+ * NOTE: Satori (the next/og engine) requires every <div> with more than one
+ * child to set display:flex. Each string with an {expression} inside counts as
+ * multiple children — so pre-compose text into single strings and keep flex
+ * on every wrapper.
  */
 export default function OG() {
+  const place = `${site.city}, ${site.country}`;
+  const roleLine = `${site.role} · WebGL · Three.js · 3D Configurators`;
+  const domain = site.url.replace('https://', '').replace('http://', '');
+
   return new ImageResponse(
     (
       <div
@@ -31,11 +40,11 @@ export default function OG() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
           <div
             style={{
-              width: 64,
-              height: 64,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              width: 64,
+              height: 64,
               background: '#e0241b',
               borderRadius: 14,
               fontSize: 40,
@@ -46,23 +55,23 @@ export default function OG() {
             N
           </div>
           <div style={{ display: 'flex', fontSize: 22, letterSpacing: 4, color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase' }}>
-            {site.city}, {site.country}
+            {place}
           </div>
         </div>
 
         {/* name + role */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ fontSize: 96, fontWeight: 800, lineHeight: 1.0, letterSpacing: -2 }}>
+          <div style={{ display: 'flex', fontSize: 96, fontWeight: 800, lineHeight: 1.0, letterSpacing: -2 }}>
             {site.name}
           </div>
-          <div style={{ fontSize: 34, marginTop: 20, color: '#ff6a3d', letterSpacing: 1 }}>
-            {site.role} · WebGL · Three.js · 3D Configurators
+          <div style={{ display: 'flex', fontSize: 34, marginTop: 20, color: '#ff6a3d', letterSpacing: 1 }}>
+            {roleLine}
           </div>
         </div>
 
         {/* footer line */}
-        <div style={{ fontSize: 24, color: 'rgba(255,255,255,0.6)', letterSpacing: 2 }}>
-          {site.url.replace('https://', '')}
+        <div style={{ display: 'flex', fontSize: 24, color: 'rgba(255,255,255,0.6)', letterSpacing: 2 }}>
+          {domain}
         </div>
       </div>
     ),
