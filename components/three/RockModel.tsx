@@ -29,7 +29,7 @@ import type { ScreenBurn } from '@/components/three/Crystal';
  * (<EffectComposer><Bloom/>) or a manual UnrealBloomPass. Ask me to wire that in.
  */
 
-const ROCK_URL = '/models/diamond_rock.glb';
+const ROCK_URL = '/models/rock.glb';
 
 /** red glow for the ring objects — HDR values (>1) so ACES tone-maps them to a hot bloom-ready colour */
 const RING_GLOW = new THREE.Color(4.0, 0.25, 0.08);
@@ -178,7 +178,7 @@ export function DiamondRock({ lowPower }: { lowPower: boolean }) {
   const { holder, ringMeshes, allMaterials } = usePreparedRock(burn, 'diamondrock');
 
   // shards reuse the first solid (non-ring) mesh geometry from the model
-  const shard = useMemo(() => {
+  const shard = useMemo<{ geo: THREE.BufferGeometry | null; mat: THREE.Material | null }>(() => {
     let geo: THREE.BufferGeometry | null = null;
     let mat: THREE.Material | null = null;
     holder.traverse((o) => {
