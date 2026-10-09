@@ -728,7 +728,7 @@ html.has-cursor .cursor {
 .hero__last {
   display: block;
   /* clip only vertically for the reveal; let italic side-bearing breathe horizontally */
-  /* overflow: hidden; */
+  overflow: hidden;
   padding: 0.04em 0.12em 0.14em 0.04em;
   will-change: transform;
 }
@@ -751,7 +751,7 @@ html.has-cursor .cursor {
   background: linear-gradient(100deg, #fff4ea 10%, var(--orange-soft) 55%, var(--orange) 90%);
   -webkit-background-clip: text;
   background-clip: text;
-  /* color: transparent; */
+  color: transparent;
   padding-right: 0.08em;
 }
 .hero__video {
@@ -1723,7 +1723,7 @@ html.has-cursor .cursor {
 }
 .footer__name {
   display: flex;
-  gap: 0.65em;
+  gap: 0.18em;
   padding: 0 calc(var(--gutter) + 6px);
   font-size: clamp(64px, 13.2vw, 260px);
   line-height: 0.9;
@@ -1732,7 +1732,7 @@ html.has-cursor .cursor {
 }
 .footer__mask {
   display: inline-block;
-  /* overflow: hidden; */
+  overflow: hidden;
   /* clip vertically for the reveal, but give the right edge room for italic side-bearing */
   padding: 0 0.18em 0.1em 0;
 }
@@ -2786,4 +2786,33 @@ html.has-cursor .cursor {
 @media (max-width: 760px) {
   .study__stage { grid-template-columns: 1fr; gap: 28px; }
   .study__name { font-size: 20vw; transform: none; text-align: left; white-space: normal; }
+}
+
+/* brand column: name block + the local strip stacked beneath the logo */
+.nav__brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* strip: location · weather · local time — sits under the brand, white */
+.localstrip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  padding-left: 64px; /* line up with the brand text, clearing the 3D logo */
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+.localstrip__place { color: #fff; }
+.localstrip__temp { color: #fff; }
+.localstrip__time { color: #fff; font-variant-numeric: tabular-nums; }
+.localstrip__dot { opacity: 0.4; }
+
+@media (max-width: 640px) {
+  .localstrip { padding-left: 50px; font-size: 9px; gap: 6px; }
 }

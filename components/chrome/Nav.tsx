@@ -9,6 +9,7 @@ import { audio } from '@/lib/audio';
 import { ui } from '@/lib/state';
 
 const NavLogo = dynamic(() => import('./NavLogo'), { ssr: false });
+const LocalStrip = dynamic(() => import('../journey/LocalStrip'), { ssr: false });
 
 export default function Nav() {
   const path = usePathname();
@@ -33,14 +34,17 @@ export default function Nav() {
         <NavLogo />
       </Link>
       <header className="nav">
-        <Link href="/" className="nav__brand" data-cursor tabIndex={-1} aria-hidden>
-          <span className="nav__name">
-            <strong>{site.name}</strong>
-            <span>
-              {site.role} — {site.city}
+        <div className="nav__brand-col">
+          <Link href="/" className="nav__brand" data-cursor tabIndex={-1} aria-hidden>
+            <span className="nav__name">
+              <strong>{site.name}</strong>
+              <span>
+                {site.role} — {site.city}
+              </span>
             </span>
-          </span>
-        </Link>
+          </Link>
+          {home && <LocalStrip />}
+        </div>
         <div className="nav__right">
           {home && (
             <a

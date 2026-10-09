@@ -164,10 +164,6 @@ export default function Journey() {
       <div className="journey__sticky">
         {/* 01 — Hero */}
         <header className="hero" data-section="hero">
-          <p className="hero__eyebrow hero__fade hero__enter" data-liquid>
-            {hero.eyebrow} <em>{hero.eyebrowItalic}</em> {hero.eyebrowRest}
-          </p>
-
           <h1 className="hero__name" data-liquid>
             <span className="hero__first">
               <span className="hero__name-inner">{site.firstName}</span>
@@ -189,7 +185,6 @@ export default function Journey() {
                 </a>
               ))}
             </span>
-            <span className="hero__hint">↓ {hero.scrollHint}</span>
           </div>
         </header>
 
@@ -229,7 +224,7 @@ export default function Journey() {
 
         {/* 03 — Into the dark */}
         <div className="mystery" data-section="dark">
-          {poeticLines.map((l, i) => {
+          {poeticLines.map((l: { text: string; key: string }, i: number) => {
             const [before, key, after] = splitKey(l.text, l.key);
             return (
               <p className="mystery__line" key={i}>
@@ -240,7 +235,7 @@ export default function Journey() {
             );
           })}
           <p className="collect" aria-hidden>
-            {poeticLines.map((l, i) => (
+            {poeticLines.map((l: { text: string; key: string }, i: number) => (
               <span key={i} className={`collect__word collect__word--${i}`}>
                 {l.key}
               </span>

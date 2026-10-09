@@ -60,22 +60,18 @@ export const nav = [
 ];
 
 export const hero = {
-
-
-
   tagline: 'Full-stack creative developer, 3D specialist & AI integrator',
- 
-  video: './video/showreel.mp4', // TODO: '/video/showreel.mp4'
-  videoPoster: './images/showreel.jpg', // TODO: '/video/showreel.jpg'
+  video: '/video/showreel.mp4', // place file at public/video/showreel.mp4
+  videoPoster: '/images/showreel.jpg', // place file at public/images/showreel.jpg
   videoLabel: 'Behind the scene',
 };
 
 export const intro = {
   label: '01 — Intro',
-  heading: 'A creative developer who builds in three dimensions, ships in code, and wires it to think.',
+  heading: 'I build things you can turn in your hands — on a screen.',
   // Revealed word by word (blur → sharp) while scrolling.
   body:
-    "I'm Nuhash — a full-stack creative developer in Dhaka. I shape the form in Blender, give it light and motion in WebGL, wire intelligence into it with AI agents and automation, and carry it all the way to a live product: 3D product configurators you can turn in your palm, walkthroughs you can wander, interactive simulations that behave like the real thing, visuals that hum instead of sit still. Thirty-plus projects shipped for clients across twenty countries. One pair of hands, start to finish — nothing lost in translation.",
+    "I'm Nuhash, a creative developer in Dhaka. I model in Blender, bring it to life in WebGL, and build the whole thing — front to back. Product configurators, walkthroughs, interactive sites. Thirty-odd projects, twenty-odd countries, one set of hands from first sketch to launch.",
   facts: [
     { k: 'Based', v: 'Dhaka, Bangladesh' },
     { k: 'Shipped', v: '30+ projects' },
@@ -103,10 +99,10 @@ export type Project = {
   role: string;
   stack: string[];
   services: string[];
-   recognition?: string[];
   summary: string;
   palette: [string, string]; // placeholder cover gradient
   featured?: boolean; // true = appears on homepage staircase (exactly 7)
+  recognition?: string[]; // awards / press, shown in the /work meta column
   image?: string; // TODO: /work/<slug>.jpg
   video?: string; // TODO: /work/<slug>.mp4 (plays only when in front)
   liveUrl?: string; // public link, if shareable
