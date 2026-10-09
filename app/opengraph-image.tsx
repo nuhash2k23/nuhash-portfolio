@@ -45,7 +45,7 @@ export default function OG() {
           >
             N
           </div>
-          <div style={{ fontSize: 22, letterSpacing: 4, color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase' }}>
+          <div style={{ display: 'flex', fontSize: 22, letterSpacing: 4, color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase' }}>
             {site.city}, {site.country}
           </div>
         </div>
