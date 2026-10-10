@@ -7,7 +7,7 @@ import { hero, intro, poeticLines, site } from '@/lib/content';
 import { T, JOURNEY_VH } from '@/lib/timeline';
 import { live, ui, useStore } from '@/lib/state';
 import { audio } from '@/lib/audio';
-import { isLowPower, prefersReducedMotion, supportsWebGL2 } from '@/lib/device';
+import { isLowPower } from '@/lib/device';
 import HeroVideo from './HeroVideo';
 
 const JourneyScene = dynamic(() => import('./JourneyScene'), { ssr: false });
@@ -28,19 +28,17 @@ export default function Journey() {
   const loaded = useStore(ui, (s) => s.loaded);
 
   useEffect(() => {
-    const reduced = prefersReducedMotion();
-    const webgl = supportsWebGL2() && !reduced;
     const low = isLowPower();
-    live.reducedMotion = reduced;
+    live.reducedMotion = false;
     live.lowPower = low;
-    ui.set({ webgl });
-    setMode({ webgl, low, reduced });
+    ui.set({ webgl: true });
+    setMode({ webgl: true, low, reduced: false });
   }, []);
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting));
+    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), { rootMargin: '100% 0px 100% 0px' });
     io.observe(el);
     return () => io.disconnect();
   }, []);
@@ -155,8 +153,8 @@ export default function Journey() {
 
   return (
     <section ref={sectionRef} id="journey" className={`journey ${mode.webgl ? '' : 'journey--static'}`} style={{ height: `${vh}vh` }} aria-label="Introduction">
-      {mode.webgl && (
-        <div className="journey__canvas" style={{ visibility: active ? 'visible' : 'hidden' }}>
+      {mode.webgl && active && (
+        <div className="journey__canvas">
           <JourneyScene active={active} lowPower={mode.low} />
         </div>
       )}

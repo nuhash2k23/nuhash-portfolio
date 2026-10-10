@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { loading, registerTask, ui, useStore } from '@/lib/state';
-import { prefersReducedMotion, supportsWebGL2 } from '@/lib/device';
 import Grain from './Grain';
 
 const MIN_TIME = 2600; // the signature needs this long to finish writing
@@ -38,10 +37,8 @@ export default function Loader() {
   useEffect(() => {
     const fonts = registerTask('fonts');
     const page = registerTask('page');
-    if (supportsWebGL2() && !prefersReducedMotion()) {
-      registerTask('scene');
-      registerTask('environment');
-    }
+    registerTask('scene');
+    registerTask('environment');
     document.fonts?.ready.then(() => fonts(1));
     if (document.readyState === 'complete') page(1);
     else window.addEventListener('load', () => page(1), { once: true });

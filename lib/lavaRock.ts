@@ -53,11 +53,18 @@ export function makeLavaRock(opts: LavaOptions = {}): THREE.MeshStandardMaterial
 
   // install the dissolve hook first (when a burn front is supplied), then wrap it so BOTH
   // patches run in one compile — each onBeforeCompile assignment replaces the previous one.
+  // When the dissolve hook runs it ALREADY injects `uniform float uTime` and the snoise
+  // chunk; re-injecting them here causes GLSL "redefinition" / "function already has a body"
+  // errors. So we only inject those two ourselves when there is no dissolve hook.
   let dissolveHook: THREE.Material['onBeforeCompile'] | undefined;
+  const hasDissolve = !!opts.burn;
   if (opts.burn) {
     withScreenDissolve(mat, opts.burn, snoise, `lava-${mat.uuid}`);
     dissolveHook = mat.onBeforeCompile;
   }
+
+  // only the parts dissolve has NOT already added
+  const sharedDecls = hasDissolve ? '' : `uniform float uTime;\n        ${snoise}`;
 
   mat.onBeforeCompile = (shader, renderer) => {
     dissolveHook?.(shader, renderer);
@@ -68,17 +75,17 @@ export function makeLavaRock(opts: LavaOptions = {}): THREE.MeshStandardMaterial
       .replace('#include <begin_vertex>', `#include <begin_vertex>\n vLavaPos = position;`);
 
     shader.fragmentShader = shader.fragmentShader
+      // insert right before main(): every shared chunk (dissolve's snoise included) is
+      // already declared above this point, so lavaFbm can call snoise safely.
       .replace(
-        '#include <common>',
-        `#include <common>
-        varying vec3 vLavaPos;
-        uniform float uTime;
+        'void main() {',
+        `varying vec3 vLavaPos;
         uniform float uGlow;
         uniform vec3  uVeinColor;
         uniform float uVeinScale;
         uniform float uVeinSharp;
         uniform float uDetailScale;
-        ${snoise}
+        ${sharedDecls}
         float lavaFbm(vec3 p){
           float f = 0.0, a = 0.5;
           for(int i=0;i<4;i++){ f += a*snoise(p); p*=2.03; a*=0.5; }
@@ -90,7 +97,8 @@ export function makeLavaRock(opts: LavaOptions = {}): THREE.MeshStandardMaterial
           float n2 = lavaFbm(p * uVeinScale * 2.3 + 11.0);
           ridge += pow(clamp(1.0 - abs(n2), 0.0, 1.0), uVeinSharp * 1.6) * 0.6;
           return clamp(ridge, 0.0, 1.0);
-        }`,
+        }
+        void main() {`,
       )
       .replace(
         '#include <roughnessmap_fragment>',

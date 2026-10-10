@@ -6,7 +6,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { getLenis, setLenis } from '@/lib/scroll';
 import { live, ui } from '@/lib/state';
-import { prefersReducedMotion, supportsWebGL2 } from '@/lib/device';
 
 /**
  * Lenis smooth scroll wired into GSAP's ticker.
@@ -17,7 +16,7 @@ export default function SmoothScroll() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    ui.set({ webgl: supportsWebGL2() && !prefersReducedMotion() });
+    ui.set({ webgl: true });
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
     const lenis = new Lenis({ duration: 1.35, smoothWheel: true, wheelMultiplier: 0.85 });
